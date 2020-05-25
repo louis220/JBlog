@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="category">
+	<select id="selectAll" parameterType ="long" resultType="CategoryVo">
+	<![CDATA[
+	SELECT c.cateNo, c.cateName, c.description, c.userNo
+	FROM category c, users u
+	WHERE c.userNo = u.userNo AND u.userNo=#{val}
+	
+	]]>
+
+</select>
+
+
+	
+<insert id="insert" parameterType="CategoryVo">
+	<selectKey keyProperty="cateNo" resultType="long" order="BEFORE">
+		SELECT seq_category_no.nextval FROM dual
+	</selectKey>
+	<![CDATA[
+	INSERT INTO category(cateNo, userNo, cateName, description, regDate)
+	VALUES(
+		#{cateNo}, #{userNo}, #{ cateName}, #{description}, sysdate
+		)
+	
+	]]>
+	
+	</insert>
+	
+	<delete id="delete" parameterType="CategoryVo">
+	<![CDATA[
+	DELETE fROM category
+	WHERE cateNo= #{cateNo}
+	
+	]]>
+	
+	</delete>
+	
+
+	
+</mapper>
